@@ -1,7 +1,9 @@
-const { parsePdf } = require("./parsePdf");
+// const { parsePdf } = require("./parsePdf");
+const { genExcel } = require('./genExcel');
 
 start();
 
 async function start() {
-    parsePdf();
+    // parsePdf();
+    genExcel();
 }
