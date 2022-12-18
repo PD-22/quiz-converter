@@ -17,15 +17,22 @@ function formatQuiz(text) {
 
 exports.formatQuiz = formatQuiz;
 
-function formatOptionsPart(optionsPart) {
-    return optionsPart.split('\n').map(x => x.trim()).filter(Boolean);
-}
-
 function formatQuestionPart(questionPart) {
     const questionMatch = questionPart.match(/(\d+)\.\s*(.*)/s);
     const number = questionMatch[1];
     const question = questionMatch[2].replace(/(\r\n|\n|\r)/gm, "");
     return { number, question };
+}
+
+function formatOptionsPart(optionsPart) {
+    const optionParts = optionsPart.split('\n').map(x => x.trim()).filter(Boolean);
+    const optionEntries = optionParts.map(option => {
+        const optionMatch = option.match(/([აბგდ])\.\s*(.*)/);
+        const letter = optionMatch[1];
+        const optionText = optionMatch[2];
+        return [letter, optionText];
+    });
+    return Object.fromEntries(optionEntries);
 }
 
 function formatAnswerPart(answerPart) {
