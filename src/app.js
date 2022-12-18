@@ -11,14 +11,8 @@ async function start(startPath) {
     const inputPath = join(startPath, '/quiz.pdf');
     const quizText = await parseQuizPdf(inputPath);
 
-    const quizObject = formatQuiz(quizText);
-    console.log(quizObject);
+    const quizList = formatQuiz(quizText);
 
     const outputPath = join(startPath, '/quiz.xlsx');
-    const gridInput = [
-        ['question1', 'answer1'],
-        ['question2', 'answer2'],
-        ['question2', 'answer2'],
-    ];
-    await genQuizExcel(outputPath, gridInput);
+    await genQuizExcel(outputPath, quizList);
 }
