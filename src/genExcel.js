@@ -1,14 +1,23 @@
 const excel = require('excel4node');
-const { join } = require('path');
 
-const outputPath = join(__dirname, '../data/quiz.xlsx');
-
-async function genExcel() {
+/*
+gridInput example
+[
+    ['question1', 'answer1'],
+    ['question2', 'answer2'],
+    ['question2', 'answer2'],
+];
+*/
+async function genExcel(outputPath, gridInput) {
     const workbook = new excel.Workbook();
     const worksheet = workbook.addWorksheet('Sheet 1');
 
-    worksheet.cell(1, 1).string('question');
-    worksheet.cell(1, 2).string('answer');
+    gridInput.forEach((row, i) => {
+        row.forEach((text, j) => {
+            const [y, x] = [i + 1, j + 1];
+            worksheet.cell(y, x).string(text);
+        })
+    });
 
     workbook.write(outputPath);
 }
