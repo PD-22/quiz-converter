@@ -8,7 +8,7 @@ gridInput example
     ['question2', 'answer2'],
 ];
 */
-async function genExcel(outputPath, gridInput) {
+async function genQuizExcel(outputPath, gridInput) {
     const workbook = new excel.Workbook();
     const worksheet = workbook.addWorksheet('Sheet 1');
 
@@ -22,4 +22,4 @@ async function genExcel(outputPath, gridInput) {
     workbook.write(outputPath);
 }
 
-exports.genExcel = genExcel;
+exports.genQuizExcel = genQuizExcel;

@@ -1,7 +1,7 @@
 const fs = require('fs/promises');
 const pdfParse = require('pdf-parse');
 
-async function parsePdf(inputPath) {
+async function parseQuizPdf(inputPath) {
     const dataBuffer = await fs.readFile(inputPath);
 
     const parsedPdf = await pdfParse(dataBuffer);
@@ -10,4 +10,4 @@ async function parsePdf(inputPath) {
     return text;
 }
 
-exports.parsePdf = parsePdf;
+exports.parseQuizPdf = parseQuizPdf;
