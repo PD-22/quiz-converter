@@ -3,16 +3,12 @@ const { parseQuizPdf } = require("./parseQuizPdf");
 const { formatQuiz } = require("./formatQuiz");
 const { genQuizExcel } = require('./genQuizExcel');
 
-const startPath = join(__dirname, '../test');
+start();
 
-start(startPath);
-
-async function start(startPath) {
-    const inputPath = join(startPath, '/quiz.pdf');
+async function start() {
+    const inputPath = join(__dirname, '/test/quiz.pdf');
     const quizText = await parseQuizPdf(inputPath);
-
-    const quizList = formatQuiz(quizText);
-
-    const outputPath = join(startPath, '/quiz.xlsx');
-    await genQuizExcel(outputPath, quizList);
+    const quizFormatted = formatQuiz(quizText);
+    const outputPath = join(__dirname, '/test/quiz.xlsx');
+    await genQuizExcel(outputPath, quizFormatted);
 }

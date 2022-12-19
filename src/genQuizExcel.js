@@ -1,16 +1,6 @@
 const excel = require('excel4node');
 const { sortBy } = require('lodash');
 
-/*
-options example
-{
-    'ა': '21 დღე;',
-    'ბ': '6 თვე;',
-    'გ': '2 წელიწადი;',
-    'დ': '9 თვე.'
-};
-*/
-
 async function genQuizExcel(outputPath, quizList) {
     const workbook = new excel.Workbook();
     const worksheet = workbook.addWorksheet('Sheet 1');

@@ -1,14 +1,3 @@
-/*
-output example
-[
-  {
-    number: '21',
-    question: 'საქართველოს კონსტიტუციით, რა არის ბრალდებულის წინასწარი პატიმრობის მაქსიმალური ვადა?',       
-    options: [ 'ა. 21 დღე', 'ბ. 6 თვე', 'გ. 2 წელიწადი', 'დ. 9 თვე' ],
-    answer: 'დ'
-  }
-]
-*/
 function formatQuiz(text) {
     const regex = /(\d+\..*?)\s*?((?:^\s*?[ა-ჰ]\.\s*?.*?)+?)\s*?(სწორი პასუხია:\s*?[ა-ჰ])\s/smg;
     const matchList = [...text.matchAll(regex)];
