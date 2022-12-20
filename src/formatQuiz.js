@@ -33,9 +33,9 @@ function formatOptionsPart(optionsPart) {
 
     const optionList = [];
     matchedIndexes.forEach((item, i) => {
-        const prev = matchedIndexes[i - 1] ?? 0;
         const current = matchedIndexes[i];
-        const segment = optionsPart.slice(prev, current);
+        const next = matchedIndexes[i + 1] ?? optionsPart.length;
+        const segment = optionsPart.slice(current, next);
         const result = removeNewLines(segment).trim().replace(/;$/g, '');
         if (result) optionList.push(result);
     });
