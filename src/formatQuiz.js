@@ -24,10 +24,7 @@ function formatQuestionPart(questionPart) {
     return { number, question };
 }
 
-// test second quiz
-// remove ; and . endings
 function formatOptionsPart(optionsPart) {
-    // const optionParts = optionsPart.split('\n').map(x => x.trim()).filter(Boolean);
     const matches = [...optionsPart.matchAll(/^.*[ა-ჰ]\./mg)];
     const matchedIndexes = matches.map(x => x.index);
 
