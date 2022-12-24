@@ -1,13 +1,15 @@
 function formatQuiz(text) {
-    const regex = /(\d+\..*?)\s*?((?:^\s*?[ა-ჰ]\.\s*?.*?)+?)\s*?(სწორი პასუხია:\s*?[ა-ჰ])\s/smg;
-    const matchList = [...text.matchAll(regex)];
+    const textClean = removeNewLines(text)
+    const questIndexList = [...textClean.matchAll(/\b\d+\./g)].map(x => x.index);
+    const questList = trimList(splitAtIndex(textClean, questIndexList));
 
-    return matchList.map((match) => {
-        const questionPart = match[1].trim();
-        const optionsPart = match[2].trim();
-        const answerPart = match[3].trim();
+    return questList.map(quest => {
+        const optionsIndex = quest.search(/\s[ა-ჰ]\./);
+        const answerIndex = quest.search(/\sსწორი პასუხია:/);
+        const splitParts = trimList(splitAtIndex(quest, [optionsIndex, answerIndex]));
+        const [questPart, optionsPart, answerPart] = splitParts;
 
-        const { number, question } = formatQuestionPart(questionPart);
+        const { number, question } = formatQuestionPart(questPart);
         const options = formatOptionsPart(optionsPart);
         const answer = formatAnswerPart(answerPart);
 
@@ -18,39 +20,49 @@ function formatQuiz(text) {
 exports.formatQuiz = formatQuiz;
 
 function formatQuestionPart(questionPart) {
-    const questionMatch = questionPart.match(/(\d+)\.\s*(.*)/s);
-    const number = questionMatch[1];
-    const question = removeNewLines(questionMatch[2]);
+    const [number, question] = trimList(splitAtFirstDot(questionPart));
     return { number, question };
 }
 
 function formatOptionsPart(optionsPart) {
-    const matches = [...optionsPart.matchAll(/^.*[ა-ჰ]\./mg)];
-    const matchedIndexes = matches.map(x => x.index);
+    const optionIndexList = [...optionsPart.matchAll(/\s[ა-ჰ]\./g)].map(x => x.index);
 
-    const optionList = [];
-    matchedIndexes.forEach((item, i) => {
-        const current = matchedIndexes[i];
-        const next = matchedIndexes[i + 1] ?? optionsPart.length;
-        const segment = optionsPart.slice(current, next);
-        const result = removeNewLines(segment).trim().replace(/[;,.]$/g, '');
-        if (result) optionList.push(result);
-    });
+    const optionList = trimList(
+        splitAtIndex(optionsPart, optionIndexList)
+    ).map(
+        x => x.replace(/[;,.]$/g, '')
+    );
 
-    const optionEntries = optionList.map(option => {
-        const optionMatch = option.match(/([ა-ჰ])\.\s*(.*)/s);
-        const letter = optionMatch[1];
-        const optionText = optionMatch[2];
-        return [letter, optionText];
-    });
+    const optionEntries = optionList.map(option => trimList(splitAtFirstDot(option)));
     return Object.fromEntries(optionEntries);
 }
 
 function formatAnswerPart(answerPart) {
-    const answerMatch = answerPart.match(/სწორი პასუხია:\s*?([ა-ჰ])/s);
-    return removeNewLines(answerMatch[1].trim());
+    return splitAtFirstColon(answerPart)[1].trim();
 }
 
-function removeNewLines(text) {
-    return text.replace(/(\r\n|\n|\r)/gm, "");
+// #region helpers
+function trimList(str) { return str.map(x => x.trim()).filter(x => x !== ''); }
+
+function splitAtFirstDot(text) { return splitAtFirst(text, /\./); }
+function splitAtFirstColon(text) { return splitAtFirst(text, /:/); }
+function splitAtFirst(text, regex) {
+    const index = text.search(regex);
+    const first = text.slice(0, index);
+    const second = text.slice(index + 1);
+    return [first, second];
 }
+
+function splitAtIndex(text, indexList) {
+    const result = [];
+    for (let i = -1; i < indexList.length; i++) {
+        const start = indexList[i] ?? 0;
+        const end = indexList[i + 1] ?? text.length;
+        const segment = text.slice(start, end);
+        if (result) result.push(segment);
+    }
+    return result;
+}
+
+function removeNewLines(text) { return text.replace(/(\r\n|\n|\r)/gm, ""); }
+// #endregion
