@@ -1,13 +1,13 @@
-### start app:
+### Start app:
 
 ```sh
 npm i
 npm start
 ```
 
-### how it works:
-* parseQuizPdf parses test/quiz.pdf file to string
-* formatQuiz converts quiz into object
+### How it works:
+* parseQuizPdf converts pdf file to string
+* formatQuiz converts file string into quiz object
   #### example:
   ```js
   [
@@ -19,4 +19,5 @@ npm start
     }
   ]
   ```
-* genQuizExcel creates test/quiz.xlsx file
+* quiz object json file is created
+* genQuizExcel creates quiz excel file
