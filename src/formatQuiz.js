@@ -1,7 +1,7 @@
 function formatQuiz(text) {
-    const textClean = removeNewLines(text)
-    const questIndexList = [...textClean.matchAll(/\b\d+\./g)].map(x => x.index);
-    const questList = trimList(splitAtIndex(textClean, questIndexList));
+    const textClean = removeNewLines(text);
+    const questMatches = textClean.matchAll(/\b\d+\..*?პასუხია:\s[ა-ჰ]/sg);
+    const questList = [...questMatches].map(x => x[0]);
 
     return questList.map(quest => {
         const optionsIndex = quest.search(/\s[ა-ჰ]\./);
